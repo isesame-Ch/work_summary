@@ -1,0 +1,84 @@
+﻿<?php
+
+namespace App\Exceptions;
+use Exception;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+class Handler extends ExceptionHandler
+{
+    /**
+     * A list of the exception types that should not be reported.
+     *
+     * @var array
+     */
+    protected $dontReport = [                   //定义不报告的错误类型，这里没有用
+        AuthorizationException::class,              
+        HttpException::class,
+        ModelNotFoundException::class,
+        ValidationException::class,
+    ];
+
+    /**
+     * Report or log an exception.
+     *
+     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+     *
+     * @param  \Exception  $e
+     * @return void
+     */
+    public function report(Exception $e)            //报告或记录异常
+    {
+        parent::report($e);
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $e
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Exception $e)                      //将异常提交到HTTP
+    {
+        //if (env('APP_ENV') == 'prod' || env('APP_ENV') == 'true') {
+        if (1) {                                                        //手动开启debug（1）或是非debug（0）
+            if ($e instanceof NotFoundHttpException) {                     //判断异常类型是否属于NotFoundHttpException的实例
+                return response([
+                    'code' => 404,                                      //异常代码
+                    'message' => 'The api you request is not found!!',  //异常提示信息
+                    'content' => '',                                       //异常内容
+                    'contentEncrypt' => ''
+                ])->setStatusCode(200);                                     //设置请求状态码，200代表成功
+            } else if ($e instanceof MethodNotAllowedHttpException) {
+                return response([
+                    'code' => 500,
+                    'message' => 'The api you request is not found!',
+                    'content' => '',
+                    'contentEncrypt' => ''
+                ])->setStatusCode(200);
+            } else if ($e instanceof ValidationException) {
+                return response([
+                    'code' => $e->getResponse()->getStatusCode() ,//getStatusCode()
+                    'message' => '数据校验失败',
+                    'content' => json_decode($e->getResponse()->getContent(), true),
+                    'contentEncrypt' => ''
+                ])->setStatusCode(200);
+            } else {
+                $message = $e->getMessage();
+                return response([
+                    'code' => 500,
+                    'message' => $message ? $message : '未知异常',
+                    'content' => '',
+                    'contentEncrypt' => ''
+                ])->setStatusCode(200);
+            }
+        }
+        return parent::render($request, $e);                            //返回并抛出异常
+
+    }
+}

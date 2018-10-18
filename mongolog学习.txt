@@ -1,0 +1,70 @@
+mongolog学习：
+
+http://laravelacademy.org/post/1878.html
+
+可以使用configureMonologUsing方法完全控制Monolog的日志处理器：
+
+/*
+	$app->configureMonologUsing(function($monolog) {
+	    $monolog->pushHandler(...);
+	});
+*/
+
+
+
+分析公司日志代码：
+<?php                                                  //不谈
+namespace App\Helpers;                                                  //不谈
+use Monolog\Logger;                                                  //不谈
+use Monolog\Handler\RotatingFileHandler;                                                  //不谈
+use Monolog\Formatter\LineFormatter;                                                  //不谈
+class MyLog                                                  //不谈
+{
+    // 所有的LOG都要求在这里注册
+    const LOG_ICEERROR = 'ICEerror';                                                  //定义5中类别的日志，下面调用的时候被我删了，只分析lumen和error类别
+    const LOG_ERROR = 'error';
+    const LOG_INTEREST = 'interest';
+    const LOG_LUMEN = 'lumen';
+    const LOG_JPUSH = 'jpush';
+
+    private static $loggers = array();												//
+
+    // 获取一个实例
+    public static function getLogger($type = self::LOG_ERROR, $day = 7)
+    {
+
+        if (empty(self::$loggers[$type])) {						//判断为空的话说明是一个新的日志
+            $monoLog = new Logger($type);						//创建一个logger的实例，并将日志类别传入
+            $handler = new RotatingFileHandler(					//创建一个日期型的日志，第一个参数为命名格式，第二参数为最大文件限制
+                sprintf(
+                    '%s/logs/%s.log',
+                    storage_path(),
+                    $type
+                ),
+                $day
+            );
+            $handler->setFormatter(new LineFormatter(			//设置日志的格式为日期 日志内容 换行，第二个参数为日期格式
+                '%datetime% %message%' . PHP_EOL,
+                'Y-m-d H:i:s u'
+            ));
+
+            self::$loggers[$type] = $monoLog->pushHandler($handler);	//处理日志并将结果写入私有loggers数组（有一个日志就写一个，有两个就写两个）
+
+        }
+
+        return self::$loggers[$type];						//将数组返回
+    }
+
+    //普通错误日志（代码、数据库错误）
+    public function errorLog($countent, $type = self::LOG_ERROR, $day = 30)
+    {
+        $this->getLogger($type, $day)->error($countent);	//写入日志内容
+    }
+
+    //普通日志
+    public function lumenLog($countent, $type = self::LOG_LUMEN, $day = 30)
+    {
+        $this->getLogger($type, $day)->info($countent);		//写入日志内容
+    }
+
+}

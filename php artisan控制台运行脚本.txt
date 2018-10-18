@@ -1,0 +1,66 @@
+php artisan控制台运行脚本
+1.编写脚本文件XXX.php放入laravel框架app/console/commands文件夹下
+2.设置脚本命令		//protected $signature = 'customer:163';
+3.在Kernel文件里注册脚本
+
+/*
+	protected $commands = [
+	        Commands\SyncUser::class,
+	        Commands\SyncCustomer::class
+	];
+*/
+4.在命令行中输入php artisan customer:163（设置的命令，可以通过php artisan list查看），运行脚本
+
+/**
+ * 注意：
+ * 不要在脚本的handle里处理所有事，一个方法只处理一个事，要有面向对象的思想！！
+ */
+
+
+ 脚本example：
+
+	 <?php
+
+	namespace App\Console\Commands;
+	use Illuminate\Console\Command;
+
+	class CustomerA extends Command
+	{
+	    /**
+	     * The name and signature of the console command.
+	     *
+	     * @var string
+	     */
+	    protected $signature = 'customer:163';
+
+	    /**
+	     * The console command description.
+	     *
+	     * @var string
+	     */
+	    protected $description = '自动更新用户.';
+
+
+	    protected $table = 'customer_163';
+	    protected $connection = 'czy_application_service';
+
+	    private $n = 877;
+
+	    /**
+	     * Create a new command instance.
+	     */
+	    public function __construct()
+	    {
+	        parent::__construct();
+	    }
+
+	    /**
+	     * Execute the console command.
+	     *
+	     * @return mixed
+	     */
+	    public function handle()
+	    {
+	       //脚本代码
+	    }
+	｝

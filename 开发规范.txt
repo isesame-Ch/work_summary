@@ -1,0 +1,10 @@
+开发规范：
+1.在controller做默认值处理，service层要求必传
+2.返回数据数组的组装在service层处理，controller只管返回数据即可
+3.model层不要抛错，没有数据返回false
+4.在service层处理逻辑和错误
+5.在更新数据库的时候，先根据条件查是否有这条数据，有再更新
+6.数据库，getbyid，list，create，update，getCategoryListByCondition
+7.接到一个需求，首先要想清楚应用场景，根据应用场景设计数据库结构，列出所有接口列表，最后才开始编写代码
+8.一次性接收多个参数的情况下，laravel可以用$request->only(...,...,)的方法来接收，接收的数据会组成数组，接收的字段为键名，参数值为键值。
+利用这种方法，我们可以先定义验证规则$rule，再使用laravel自带的验证器validate()验证，然后使用array_keys($rule)来得到要接受的参数名，传递到only()方法中，这样可以提高代码质量和可读性，减少冗余代码。

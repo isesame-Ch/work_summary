@@ -1,0 +1,88 @@
+﻿按照官网的安装方法安装了laravel和lumen后发现并不能运行，报错查看后发现缺少了运行必须的vender文件夹，只需要使用composer安装vender即可，方法参考以下：
+https://jingyan.baidu.com/article/8ebacdf073040f49f65cd518.html
+
+如果失败，查看原因，有可能是因为php版本不对，可以降低laravel或lumen框架的版本，采用composer来指定安装框架版本
+
+composer global require "laravel/lumen-installer"  //下载lumen安装包
+lumen new xxx   //安装最新的lumen框架版本，xxx为安装后的文件夹名，但容易发生版本不对的问题
+composer create-project laravel/lumen blog --prefer-dist "5.5.*"    //可以通过这个命令来安装指定版本的框架
+
+
+
+
+安装完后搭建redis缓存
+1、修改.env文件，如果没有，拷贝.env.example
+
+APP_ENV=local
+APP_DEBUG=true
+APP_KEY=bcee22b233721b47c6043e6bf35ac4ee
+APP_TIMEZONE=Asia/Shanghai
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+
+CACHE_DRIVER=redis
+QUEUE_DRIVER=sync
+
+2、打开composer.json修改
+
+"require": {
+    "php": ">=5.6.4",
+    "laravel/lumen-framework": "5.4.*",
+    "vlucas/phpdotenv": "~2.2",
+    "predis/predis": "~1.0",
+    "illuminate/redis" : "5.4.*"
+},
+
+3、然后打开运行cmd切换到你的目录，输入 composer uptate
+4、打开bootstrap/app.php添加和去掉注释					//这一步laravel和lumen略有区别，可以上网查看
+
+$app = new Laravel\Lumen\Application(
+    realpath(__DIR__.'/../')
+);
+
+$app->register(Illuminate\Redis\RedisServiceProvider::class);
+
+$app->withFacades();
+
+$app->withEloquent();
+
+5、验证
+
+打开web.php路由修改
+
+$app->get('/', function () use ($app) {
+    //return $app->version();
+    Cache::put('lumen', 'Hello, Lumen.', 5);
+    return Cache::get('lumen');
+});
+
+
+
+
+
+配置日志文件
+
+在/bootstrap/app.php里return之前添加以下代码，即可完成日志按日期生成，且按setFormatter中的格式单行显示		//laravel和lumen框架有区别，注册地址不同
+
+//date log
+$app->configureMonologUsing(function (Monolog\Logger $monoLog) use ($app) {
+    $handler = new \Monolog\Handler\RotatingFileHandler(
+        sprintf(
+            '%s/logs/app.log',
+            $app->storagePath()
+        ),
+        7
+    );
+    $handler->setFormatter(new \Monolog\Formatter\LineFormatter(
+        '%datetime% %level_name% %message% %context% %extra%' . PHP_EOL,
+        'Y-m-d H:i:s u'
+    ));
+    return $monoLog->pushHandler($handler);
+});
+
+若需要按类别保存日志等操作日志，需要另外在Helpers中写插件，如MyLog.php，若要在服务组件中使用，需要到该服务组件中注册。

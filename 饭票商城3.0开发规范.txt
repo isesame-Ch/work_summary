@@ -1,0 +1,42 @@
+1.model层不要处理逻辑，逻辑都在service层处理
+
+2.不要返回前端不需要的信息给他们
+
+3.同一个接口名可以用来命名两个接口，get表示获取，post表示提交
+
+4.严格区分大小写，因为linux系统严格区分大小写
+
+5.面向用户的APP端不要报错，查询不到结果返回空
+
+6.有层级关系的分类，新建分类有可能是第一级，也可能是父分类下的子分类，可以先给参数一个默认值为一级分类的id，需要在父分类下创建的时候再给参数父分类id，state、sort这类参数非必传，但数据库必须，可以给默认值，默认启用
+
+
+7.前端传json数组传[id1,id2,id3...]这样的数组时，可以用explode来处理成数组，不一定要用json_decode
+
+
+8.图片地址现在是aliyun的oos要和以前的拼接图片兼容，可以用以下方法
+public function getById($id)
+{
+    if(!$id)
+    {
+        return false;
+    }
+    $result  = $this->getModel()->getById($id);				//通过id得到数据
+    if(!$result)
+    {
+        return false;
+    }
+    return $this->handelImg($result);						//传到handelImg这个方法处理图片
+}
+
+public function handelImg($model)
+{
+    if(array_key_exists('category_image', $model))				//判断查询的结果里又没有图片字段
+    {
+        if(strstr($model->category_image ,'http') == false)		//兼容以前的拼接图片地址的方式
+        {
+            $model->category_image = env('IMG_SERVER').$model->category_image;
+        }
+    }
+    return $model;											//返回获得的数据
+}

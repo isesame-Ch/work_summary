@@ -1,0 +1,64 @@
+Sublime text2 常用插件集锦
+Sublime text常用插件转载（煦涵）2018-09-06 00:21:23
+No.01 – Emmet 
+Emmet 是一个前端开发的利器，其前身是 Zen Coding。它让编写 HTML 代码变得简单。Emmet 的基本用法是：输入简写形式，然后按 Tab 键。
+关于 Emmet 的更多用法，请看官方文档，这份速查表可以帮你快速记忆简写形式。
+
+No.02 – SublimeLinter 
+SublimeLinter 是一个代码校验插件，它可以帮你找出错误或编写不规范的代码，支持 C/C++、CoffeeScript、CSS、Git Commit Messages、Haml、HTML、Java、JavaScript、Lua、Objective-J、Perl、PHP、Puppet、Python、Ruby 和 XML 语言。
+
+No.03 – SideBarEnhancements 
+SideBarEnhancements 是一款很实用的右键菜单增强插件，有以 diff 形式显示未保存的修改、在文件管理器中显示该文件、复制文件路径、在侧边栏中定位该文件等功能，也有基础的诸如新建文件/目录，编辑，打开/运行，显示，在选择中/上级目录/项目中查找，剪切，复制，粘贴，重命名，删除，刷新等常见功能。
+
+SideBarEnhancements 还有一个功能就是自定义打开文件的程序，在侧边栏中右键点击一个文件（夹），选择 Open With -> Edit Applications 就可以修改关联了，配置文件自带示例，可以很方便地套用。
+
+Copy as Text... 是 SideBarEnhancements 的又一个特色功能，可以复制包含各种形式的路径、URL（甚至包括 base64 的 data:uri）、转码后的文件名、各种 HTML Tag（a、img、script、style）等。
+
+No.04 – SublimeCodeIntel 
+SublimeCodeIntel 是一个代码提示、补全插件，支持 JavaScript、Mason、XBL、XUL、RHTML、SCSS、Python、HTML、Ruby、Python3、XML、Sass、XSLT、Django、HTML5、Perl、CSS、Twig、Less、Smarty、Node.js、Tcl、TemplateToolkit 和 PHP 等语言，是 Sublime Text 自带代码提示功能的很好扩展。它还有一个功能就是跳转到变量、函数定义的地方，十分方便。
+
+使用 SublimeCodeIntel 之前你需要安装相应程序并把路径写入 ~/.codeintel/config 或 project_root/.codeintel/config 中，ReadMe 中有详细的 说明，不再赘述。
+
+十分不建议把 SublimeCodeIntel 与其他单个语言的扩展 package 一同使用，虽然很多语言扩展 package 比 SublimeCodeIntel 的代码提示功能要完善。如果需要一同使用，请在用户配置文件（菜单 Preferences -> Package Settings -> SublimeCodeIntel -> Settings - User 中加入下面的内容，并去掉要禁用的语言。
+
+"codeintel_enabled_languages":
+[
+"JavaScript", "Mason", "XBL", "XUL", "RHTML", "SCSS", "Python", "HTML",
+"Ruby", "Python3", "XML", "Sass", "XSLT", "Django", "HTML5", "Perl", "CSS",
+"Twig", "Less", "Smarty", "Node.js", "Tcl", "TemplateToolkit", "PHP"
+],
+"codeintel_live_enabled_languages":
+[
+"JavaScript", "Mason", "XBL", "XUL", "RHTML", "SCSS", "Python", "HTML",
+"Ruby", "Python3", "XML", "Sass", "XSLT", "Django", "HTML5", "Perl", "CSS",
+"Twig", "Less", "Smarty", "Node.js", "Tcl", "TemplateToolkit", "PHP"
+]
+No.05 – Alignment 
+Alignment 是一个代码格式化插件，它可以使多行代码中的等号对齐，也可以调整多行代码为一个缩进级别，默认快捷键是 ctrl+alt+a（Mac OS 上是 cmd+ctrl+a）。
+
+No.06 – BracketHighlighter 
+BracketHighlighter 是一个括号、引号、标签高亮插件，支持 []、()、{}、""、'' 和 等，比 Sublime Text 自带的高亮要明显得多。
+
+No.07 – Git
+Git 插件集成了 git 的常用功能，使用之前需要安装 git 并写入环境变量中。
+
+No.08 – JSFormat
+JS格式化插件
+
+No.09 – SassBeautify
+Sass 文件美化插件
+
+No.10 – DocBlockr
+自动给函数添加块级注释。
+
+No.11 – Pretty JSON
+JSON美化扩展扩展插件
+
+No.12 - SublimeTmpl
+html/js/css/php模板插件
+
+No.13 - Sublime Function Name Display 
+This plugin displays the current file, class and function name on the status bar in Sublime Text 2 and 3.
+
+参考地址：
+https://sublime.wbond.net/search

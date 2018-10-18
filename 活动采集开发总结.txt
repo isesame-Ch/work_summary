@@ -1,0 +1,35 @@
+1.数据库分库分表（重点，必须要理解）
+    数据库分表可以垂直分表和水平分表，垂直分表意思是通过属性按列来分（主从表），把具有相似性质的属性分到不同的表，垂直分库意思是把具有强关联关系的表放到一个库或者同一个server里，其他关联性不强的，拆分到另外的库或者server里；水平分表意思是按某一特殊标志把表截断，分到不同的表，比如可以按月分表，按id分表等
+
+    具体可以参考这篇文章：https://blog.csdn.net/u013276277/article/details/78565298
+    具体分表案例可以参考这篇文章：https://www.cnblogs.com/miketwais/articles/mysql_partition.html
+    高阶分库分表案例：蘑菇街-》https://www.wenji8.com/p/3334qPr.html
+
+  按月分表时，要提前把表创建好，可以一次创建N个月的表，然后每个月执行一次脚本，判断库中是否有该表，有则不创建相反则创建：
+  create table IF NOT EXISTS tb_member1(...)...		该语句可以在创建表的时候判断是否存在tb_member1表，记住IF NOT EXSTS，很多地方可以用到
+  //创建tb_member2也可以用下面的语句  create tabl IF NOT EXISTS tb_member2 like tb_member1;
+
+
+
+2.如果数据量太大导致查询和导出时组装数据超时，可以分开查询和导出，如本次的需求是查询事业部、大区、总的任务完成率，如果要组装成有层级关系的数据，会报超时，所以可以最外层的表展示任务总完成率，然后点击每一个任务的详情，再去查询该任务的大区、事业部任务完成率！导出也同样如此，如果需要导出成有层级关系的表，只能导出以后手动操作。
+
+3.可以使用toSql()的方法查看model层中组装的sql语句
+
+4.不要使用！！！不要使用！！！不要使用！！！嵌套查询！！！！！！！！（重要的话说三次），嵌套查询效率非常低，可以用两种方法代替，一是把嵌套查询中的结果作为临时表，再用联表查询；第二是先把嵌套查询的结果单独查询出来，再用whereIn语句查询结果。
+
+5.model层的任何方法后面加Raw都可以写原生的sql语句查询，如selectRaw($sql),whereRaw($sql),orderByRaw($sql),DB::raw($sql)等等,DB::select($sql)是执行里面的原生sql。
+
+6.导出和查询可以公用一个接口，在model层里面做判断，设置参数page_size=false，查询的时候就传page_size，导出的时候不穿，最后return is_numeric($page_size) ? $query->paginate($page_size) : $query->get();判断是分页查询还是全部导出
+
+7.在通过条件来查询结果的地方，判断有该条件存在要取出的情况下可以用array_pull()取出（取出后数组里就没有该值了），这样就不用unset了，如果后面还要用到的话，不要用array_pull，直接用，用完unset该值即可。
+
+8.distinct与group By的区别
+distinct：distinct支持单列、多列的去重方式。 单列去重的方式简明易懂，即相同值只保留1个。多列的去重则是根据指定的去重的列信息来进行，即只有所有指定的列信息都相同，才会被认为是重复的信息。 
+group By则是根据分组的字段去重不会出现重复的结果。
+
+在（没有聚合函数）的（单列）去重时候，两者返回的集是一样的，在有聚合函数运算时，要防止笛卡尔积现象所以要使用group by，单纯的单列去重且数据量大时建议使用group By
+
+参考文章  https://blog.csdn.net/ljl890705/article/details/70602442
+         https://bbs.csdn.net/topics/390198600
+
+group by的学习文章：https://zhidao.baidu.com/question/590758877.html

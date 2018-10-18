@@ -1,0 +1,7 @@
+laravel要在后台接收前端传过来的header里的东西，需要先在bootstrap里的app.php里添加以下接收代码
+
+header("Access-Control-Allow-Headers: Origin,X-Requested-With,Content-Type,...,...,...");	//...代表需要接收的内容
+
+然后在需要接收的地方$request->headers->has/get()来调用
+
+//注：仅在跨域时需要！！

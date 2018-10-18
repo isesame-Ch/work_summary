@@ -1,0 +1,36 @@
+修改node.js默认的npm安装目录
+npm全局安装地址修改环境变量配置西山2018-09-04 14:53:28
+默认的安装路径：C:/用户/[用户名]/AppData/Roming/npm/node_meodules
+
+修改
+
+一：打开CMD，查看配置
+
+npm config ls
+二：在其它物理盘建立文件夹如：C:\Program Files\nodejs
+
+
+
+三：重新设置
+
+npm config set prefix "C:\\Program Files\\nodejs\\node_global" set cache "C:\\Program Files\\nodejs\\node_cache"
+四：测试
+
+npm install express -g
+-g意思是安装到全局目录下，即  D:\sw\develop\nodejs\npm下面的node_modules
+
+
+
+五：更改环境变量配置
+
+
+
+修改了默认安装地址后，需要更改环境变量配置的地址，否则使用全局包的时候会报错：
+
+'xxx' 不是内部或外部命令，也不是可运行的程序
+
+或批处理文件。
+
+
+
+path里设置：C:\Program Files\nodejs\node_global

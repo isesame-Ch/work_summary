@@ -1,0 +1,25 @@
+用webstorm调试NodeJs
+webstorm调试NodeJs西山2018-09-14 16:44:54
+用webstorm调试NodeJs
+
+
+
+1.在需要调试的地方用webstorm打断点
+
+
+
+
+
+2.在IDE内的菜单栏找到RUN->DEBUG,点击并选择入口文件（如：app.js）
+
+
+
+
+
+3.添加需要监视的变量，（选择变量->右键->Add to watches）
+
+
+
+
+
+4.在浏览器打开网页，执行到调试行，可以看到调试内容

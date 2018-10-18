@@ -1,0 +1,17 @@
+﻿array_filter(array(),function());		//遍历数组中的每一个元素去执行回调函数，当回调函数返回true时，保留该元素，返回为false时过滤该元素
+array_walk(array(),function());		//遍历数组中的每一个元素去执行回调函数；
+
+
+
+`area_name` varchar(50) DEFAULT '' COMMENT '大区名称',
+  `area_uuid` varchar(50) DEFAULT '' COMMENT '大区uuid',
+  `region_name` varchar(50) DEFAULT '' COMMENT '事业部名称',
+  `region_uuid` varchar(50) DEFAULT '' COMMENT '大区uuid',
+  `community_name` varchar(50) DEFAULT '' COMMENT '小区名称',
+  `community_uuid` varchar(50) DEFAULT '' COMMENT '小区uuid',
+
+
+  {"area_name":"深圳大区事业部","area_uuid":"2de01367-5fe4-4672-9211-5562807b1d84","region_name":"郑州事业部","region_uuid":"121e6c27-df3f-4433-a1bc-7438a79f9282","community_name":"国际商贸城","community_uuid":"029eeb19-db24-4961-b4a1-48967249d73e"} ,
+
+
+[{"area_name":"深圳大区事业部","area_uuid":"2de01367-5fe4-4672-9211-5562807b1d84","region_name":"郑州事业部","region_uuid":"121e6c27-df3f-4433-a1bc-7438a79f9282","community_name":"国际商贸城","community_uuid":"029eeb19-db24-4961-b4a1-48967249d73e"} ,{"area_name":"西南大区事业部","area_uuid":"c54a52a8-0c8c-41b9-a54a-2bd1fdd64edc","region_name":"","region_uuid":"","community_name":"","community_uuid":""}]

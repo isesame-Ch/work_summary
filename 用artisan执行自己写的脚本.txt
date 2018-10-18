@@ -1,0 +1,7 @@
+用artisan执行自己写的脚本：
+1.在app/console/commands文件夹下写脚本文件
+2.在Kernel.php中注册命令
+	protected $commands = [
+	        Commands\SyncUser::class,
+	];
+3.在命令行中用artisan执行命令

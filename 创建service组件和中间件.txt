@@ -1,0 +1,24 @@
+﻿（一）创建服务组件：
+首先在Helpers里编写服务组件，比如Mylog.php
+然后在Providers里注册，可以新创建一个AppServiceProvider.php文件，
+最后在/bootstrap/app.php里取消AppServiceProvider的注释（到app.php里注册这个服务组件），或者注册新的组件。
+/*
+	 $app->register(App\Providers\AppServiceProvider::class);
+*/
+就可以使用了
+
+
+
+（二）创建中间件：
+首先在Middleware里创建中间件，比如AppAuthMiddleware.php
+然后到app.php里去注册，
+/*
+	$app->routeMiddleware([
+	    'appAuth' => App\Http\Middleware\AppAuthMiddleware::class,
+	]);
+*/
+就可以在路由中使用了
+
+
+注：在laravel中注册地址不一样
+仅在lumen框架如此，在laravel框架中中间件的注册地址在http文件下的kernel中，AppServiceProvider文件需要到bootstrap文件夹下的入口文件app.php中注册
